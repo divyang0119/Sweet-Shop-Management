@@ -1,0 +1,115 @@
+{% extends 'nav.html' %}
+{% block content %}
+
+<head>
+  <title>Sweet Shop Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+  <div class="flex flex-col lg:flex-row justify-center items-start gap-8 p-6 h-screen">
+
+    <!-- Add Sweet Form -->
+    <div class="bg-white p-6 rounded-lg shadow w-full lg:w-1/3 h-fit">
+      <h1 class="text-2xl font-bold text-center mb-6">Add New Sweet</h1>
+
+      <form action="/add" method="POST" class="space-y-4">
+        <div>
+          <label for="id" class="block font-medium">ID:</label>
+          <input type="text" id="id" name="id" required
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label for="name" class="block font-medium">Name:</label>
+          <input type="text" id="name" name="sweet_name" required
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label for="category" class="block font-medium">Category:</label>
+          <input type="text" id="category" name="category" required
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label for="price" class="block font-medium">Price (kg):</label>
+          <input type="number" id="price" name="price" required
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <div>
+          <label for="qty" class="block font-medium">Quantity (kg):</label>
+          <input type="number" id="qty" name="qty" required
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-green-500 focus:outline-none">
+        </div>
+
+        <div class="text-center">
+          <button type="submit"
+            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+            Add Sweet
+          </button>
+        </div>
+      </form>
+
+      {% if message %}
+      <p class="text-green-600 text-center mt-4 font-medium">{{ message }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Sweet Purchase List with Scroll -->
+    <div class="w-full lg:w-2/3 h-full overflow-y-auto max-h-[90vh]">
+      <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">Purchase Sweets</h2>
+
+      <!-- Search bar -->
+      <div class="flex justify-end mb-4 px-2">
+        <input type="text" id="searchInput" placeholder="Search sweets..."
+          class="border border-gray-300 rounded-md px-3 py-2 mr-2 w-full max-w-sm focus:ring-blue-500 focus:outline-none">
+        <button onclick="searchSweets()"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Search</button>
+      </div>
+
+      <!-- Sweet Cards Grid -->
+      <div id="sweetContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-2 pb-6">
+        {% for sweet in sweets %}
+        <div class="sweet-card bg-white p-4 rounded-lg shadow hover:shadow-md transition">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ sweet[1] }}</h3>
+          <p class="text-gray-600"><span class="font-medium">ID:</span> {{ sweet[0] }}</p>
+          <p class="text-gray-600"><span class="font-medium">Category:</span> {{ sweet[2] }}</p>
+          <p class="text-gray-600"><span class="font-medium">Price per kg:</span> ₹{{ sweet[3] }}</p>
+          <p class="text-gray-600 mb-3"><span class="font-medium">Available Qty:</span> {{ sweet[4] }} kg</p>
+
+          <!-- Purchase Form -->
+          <form action="/purchase_sweet" method="POST" class="space-y-2">
+            <input type="hidden" name="id" value="{{ sweet[0] }}">
+            <input type="number" name="qty" placeholder="Qty (kg)" min="1" required
+              class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-green-400">
+            <button type="submit"
+              class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-md transition">
+              Purchase
+            </button>
+          </form>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if message %}
+      <p class="text-green-600 text-center mt-6 font-medium">{{ message }}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    function searchSweets() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const cards = document.querySelectorAll(".sweet-card");
+
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(input) ? "" : "none";
+      });
+    }
+  </script>
+</body>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'nav.html' %}
+{% block content %}
+<head>
+    <title>All Sweets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-6">
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
+        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Purchase Sweets</h2>
+
+        <!-- Search bar -->
+        <div class="flex justify-end mb-6">
+            <input type="text" id="searchInput" placeholder="Search sweets..." 
+                class="border border-gray-300 rounded-md px-3 py-2 mr-2 w-full max-w-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button onclick="searchSweets()" 
+                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Search</button>
+        </div>
+
+        <!-- Sweet Cards -->
+        <div id="sweetContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for sweet in sweets %}
+            <div class="sweet-card bg-gray-50 p-4 rounded-lg shadow hover:shadow-md transition duration-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ sweet[1] }}</h3>
+                <p class="text-gray-600"><span class="font-medium">ID:</span> {{ sweet[0] }}</p>
+                <p class="text-gray-600"><span class="font-medium">Category:</span> {{ sweet[2] }}</p>
+                <p class="text-gray-600"><span class="font-medium">Price per kg:</span> ₹{{ sweet[3] }}</p>
+                <p class="text-gray-600 mb-3"><span class="font-medium">Available Qty:</span> {{ sweet[4] }} kg</p>
+
+                <!-- Purchase Form -->
+                <form action="/purchase_sweet" method="POST" class="space-y-2">
+                    <input type="hidden" name="id" value="{{ sweet[0] }}">
+                    
+                    <input type="number" name="qty" placeholder="Qty (kg)" min="1" 
+                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400" required>
+
+                    <button type="submit" 
+                        class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-md transition">
+                        Purchase
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="max-w-xl mx-auto mt-20 p-8 bg-white shadow-md rounded-lg">
+            <h1 class="text-2xl font-bold text-center mb-6 text-green-600">Sweet Purchase Summary</h1>
+    
+            {% if message %}
+                <div class="text-center mb-6 text-lg font-medium {% if 'Success' in message %}text-green-600{% else %}text-red-600{% endif %}">
+                    {{ message }}
+                </div>
+            {% endif %}
+    
+            <div class="mt-6 text-center">
+                <a href="/" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+                    Go Back
+                </a>
+            </div>
+        </div>
+        {% if message %}
+        <p class="text-green-600 text-center mt-6 font-medium">{{ message }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function searchSweets() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const cards = document.querySelectorAll(".sweet-card");
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? "" : "none";
+            });
+        }
+    </script>
+</body>
+{% endblock %}

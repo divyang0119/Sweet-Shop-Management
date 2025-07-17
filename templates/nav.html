@@ -1,0 +1,19 @@
+<head>
+    <title>{% block title %}Sweet Shop{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!--  Navigation Bar -->
+    <nav class="bg-gray-900 p-4 shadow">
+        <div class="max-w-7xl mx-auto flex space-x-6">
+            <a href="/" class="text-white hover:text-yellow-400 font-semibold">Add Sweet</a>
+            <a href="/purchase" class="text-white hover:text-yellow-400 font-semibold">View Sweets</a>
+            <a href="/restock" class="text-white hover:text-yellow-400 font-semibold">Restock</a>
+        </div>
+    </nav>
+
+    <!--  Page Container -->
+    <div class="max-w-7xl mx-auto p-6">
+        {% block content %}{% endblock %}
+    </div>
+</body>

@@ -1,0 +1,62 @@
+{% extends 'nav.html' %}
+{% block content %}
+
+<style>
+    .main-container {
+        width: 90%;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .scroll {
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid rgb(0, 0, 0);
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div class="main-container">
+    <h2>Sweet Shop Inventory</h2>
+    <div class="scroll">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sweet in sweets %}
+                <tr>
+                    <td>{{ sweet[0] }}</td>
+                    <td>{{ sweet[1] }}</td>
+                    <td>{{ sweet[2] }}</td>
+                    <td>{{ sweet[3] }}</td>
+                    <td>{{ sweet[4] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
