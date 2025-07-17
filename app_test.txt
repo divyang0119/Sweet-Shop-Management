@@ -1,0 +1,7 @@
+PS E:\website\Sweet Shop Py> python app_test.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.140s
+
+OK
+PS E:\website\Sweet Shop Py> 
