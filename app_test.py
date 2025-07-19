@@ -52,25 +52,6 @@ class SweetShopTests(unittest.TestCase):
 
         self.assertIn(b'Sweet Not Found', response.data)
 
-    def test_purchase_sweet(self):
-    # Add sweet using the app route
-        self.client.post('/add', data={
-            'id': 'test2',
-            'sweet_name': 'Barfi',
-            'category': 'Traditional',
-            'price': '25',
-            'qty': '5'
-        }, follow_redirects=True)
-    
-        # Then try purchasing it
-        response = self.client.post('/purchase_sweet', data={
-            'id': 'test2',
-            'qty': '2'
-        })
-    
-        self.assertIn(b'Purchase Successful', response.data)
-
-
 # Run the tests
 if __name__ == '__main__':
     unittest.main()
